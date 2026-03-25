@@ -1,0 +1,29 @@
+@baseUrl = http://localhost:8080
+
+### Health Check
+GET {{baseUrl}}/healthy
+
+### Listar todas as categorias
+GET {{baseUrl}}/categories
+
+### Criar categoria
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "Tecnologia"
+}
+
+### Buscar categoria por ID
+GET {{baseUrl}}/categories/1
+
+### Atualizar categoria
+PATCH {{baseUrl}}/categories/1
+Content-Type: application/json
+
+{
+  "name": "Tecnologia 2.0"
+}
+
+### Deletar categoria
+DELETE {{baseUrl}}/categories/1
