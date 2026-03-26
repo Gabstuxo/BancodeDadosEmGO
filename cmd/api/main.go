@@ -46,6 +46,8 @@ func main() {
 
 	c_routes.CategoryRoutes(r, db)
 
+	r.StaticFile("/ui", "./web/index.html")
+
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.Run(":8080")

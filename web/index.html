@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Categories</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3248;
+      --accent: #6c63ff;
+      --accent-hover: #857dff;
+      --danger: #ff5c5c;
+      --danger-hover: #ff7a7a;
+      --success: #4ade80;
+      --text: #e2e8f0;
+      --muted: #8892a4;
+      --radius: 10px;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header .logo {
+      width: 32px; height: 32px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: grid; place-items: center;
+      font-size: 18px;
+    }
+
+    header h1 { font-size: 18px; font-weight: 600; letter-spacing: 0.3px; }
+    header span { color: var(--muted); font-size: 13px; margin-left: auto; }
+
+    main {
+      flex: 1;
+      padding: 32px;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* ---- CARD ---- */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    /* ---- FORM ---- */
+    .form-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .form-row input {
+      flex: 1;
+      min-width: 160px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-row input:focus { border-color: var(--accent); }
+    .form-row input::placeholder { color: var(--muted); }
+
+    /* ---- BUTTONS ---- */
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 20px;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    button:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
+
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid var(--danger);
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    .btn-danger:hover { background: var(--danger); color: #fff; }
+
+    .btn-edit {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    .btn-edit:hover { background: var(--accent); color: #fff; }
+
+    .btn-save {
+      background: var(--success);
+      color: #000;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .btn-cancel {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    /* ---- TABLE ---- */
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead th {
+      text-align: left;
+      padding: 10px 14px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.1s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--surface2); }
+
+    tbody td {
+      padding: 12px 14px;
+      vertical-align: middle;
+    }
+
+    td.id-col {
+      color: var(--muted);
+      font-size: 12px;
+      width: 50px;
+    }
+
+    td input {
+      background: var(--surface2);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: var(--text);
+      font-size: 14px;
+      width: 100%;
+      outline: none;
+    }
+
+    .actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+    /* ---- EMPTY / TOAST ---- */
+    .empty {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 14px 20px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+      z-index: 999;
+    }
+
+    #toast.show { opacity: 1; }
+    #toast.error { border-left-color: var(--danger); }
+
+    /* ---- LOADING ---- */
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">📂</div>
+  <h1>Categories</h1>
+  <span>localhost:8080</span>
+</header>
+
+<main>
+
+  <!-- FORM -->
+  <div class="card">
+    <div class="card-title">Nova Categoria</div>
+    <div class="form-row">
+      <input id="inp-name" type="text" placeholder="Nome (mín. 5 caracteres)" />
+      <input id="inp-desc" type="text" placeholder="Descrição (opcional)" />
+      <button class="btn-primary" onclick="createCategory()">+ Adicionar</button>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="card">
+    <div class="card-title">Categorias</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th style="text-align:right">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="4" class="empty"><span class="spinner"></span> Carregando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<div id="toast"></div>
+
+<script>
+  const API = 'http://localhost:8080';
+
+  // ---- LOAD ----
+  async function loadCategories() {
+    const res = await fetch(`${API}/categories`);
+    const data = await res.json();
+    const tbody = document.getElementById('tbody');
+
+    if (!data.result || data.result.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4" class="empty">Nenhuma categoria ainda.</td></tr>`;
+      return;
+    }
+
+    const sorted = data.result.slice().sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+    tbody.innerHTML = sorted.map(c => rowHTML(c)).join('');
+  }
+
+  function rowHTML(c) {
+    return `
+      <tr id="row-${c.id}">
+        <td class="id-col">#${c.id}</td>
+        <td>${esc(c.name)}</td>
+        <td style="color:var(--muted)">${esc(c.description || '—')}</td>
+        <td>
+          <div class="actions">
+            <button class="btn-edit" onclick="editRow(${c.id}, '${esc(c.name)}', '${esc(c.description || '')}')">Editar</button>
+            <button class="btn-danger" onclick="deleteCategory(${c.id})">Deletar</button>
+          </div>
+        </td>
+      </tr>`;
+  }
+
+  function editRowHTML(c) {
+    return `
+      <tr id="row-${c.id}">
+        <td class="id-col">#${c.id}</td>
+        <td><input id="edit-name-${c.id}" value="${esc(c.name)}" /></td>
+        <td><input id="edit-desc-${c.id}" value="${esc(c.desc)}" /></td>
+        <td>
+          <div class="actions">
+            <button class="btn-save" onclick="saveEdit(${c.id})">Salvar</button>
+            <button class="btn-cancel" onclick="loadCategories()">Cancelar</button>
+          </div>
+        </td>
+      </tr>`;
+  }
+
+  // ---- CREATE ----
+  async function createCategory() {
+    const name = document.getElementById('inp-name').value.trim();
+    const description = document.getElementById('inp-desc').value.trim();
+
+    if (!name) { toast('Informe o nome da categoria.', true); return; }
+
+    const res = await fetch(`${API}/categories`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, description }),
+    });
+
+    const data = await res.json();
+
+    if (!data.success) { toast(data.error || 'Erro ao criar.', true); return; }
+
+    document.getElementById('inp-name').value = '';
+    document.getElementById('inp-desc').value = '';
+    toast('Categoria criada!');
+    loadCategories();
+  }
+
+  // ---- EDIT ----
+  function editRow(id, name, desc) {
+    const row = document.getElementById(`row-${id}`);
+    row.outerHTML = editRowHTML({ id, name, desc });
+  }
+
+  async function saveEdit(id) {
+    const name = document.getElementById(`edit-name-${id}`).value.trim();
+    const description = document.getElementById(`edit-desc-${id}`).value.trim();
+
+    if (!name) { toast('Nome não pode ser vazio.', true); return; }
+
+    const res = await fetch(`${API}/categories/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, description }),
+    });
+
+    const data = await res.json();
+
+    if (!data.success) { toast(data.error || 'Erro ao atualizar.', true); return; }
+
+    toast('Categoria atualizada!');
+    loadCategories();
+  }
+
+  // ---- DELETE ----
+  async function deleteCategory(id) {
+    if (!confirm('Deletar esta categoria?')) return;
+
+    const res = await fetch(`${API}/categories/${id}`, { method: 'DELETE' });
+    const data = await res.json();
+
+    if (!data.success) { toast(data.error || 'Erro ao deletar.', true); return; }
+
+    toast('Categoria deletada.');
+    loadCategories();
+  }
+
+  // ---- UTILS ----
+  function esc(str) {
+    return String(str ?? '').replace(/'/g, "\\'").replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  let toastTimer;
+  function toast(msg, isError = false) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'show' + (isError ? ' error' : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.className = '', 3000);
+  }
+
+  // ---- ENTER KEY ----
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && document.activeElement.closest('.form-row')) {
+      createCategory();
+    }
+  });
+
+  loadCategories();
+</script>
+
+</body>
+</html>

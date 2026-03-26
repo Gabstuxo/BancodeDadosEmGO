@@ -33,18 +33,16 @@ func (u *UpdateCategoryUseCase) Execute(input UpdateCategoryInput) error {
 		return errors.New("category not found")
 	}
 
-	if category.Name == input.Name {
-		return nil
-	}
+	if category.Name != input.Name {
+		category_with_same_name, err := u.repository.FindByName(input.Name)
 
-	category_with_same_name, err := u.repository.FindByName(input.Name)
+		if err != nil {
+			return err
+		}
 
-	if err != nil {
-		return err
-	}
-
-	if category_with_same_name != nil && category_with_same_name.ID != input.ID {
-		return errors.New("name already in use")
+		if category_with_same_name != nil && category_with_same_name.ID != input.ID {
+			return errors.New("name already in use")
+		}
 	}
 
 	category, err = category.UpdateName(input.Name, input.Description, input.Teste)
